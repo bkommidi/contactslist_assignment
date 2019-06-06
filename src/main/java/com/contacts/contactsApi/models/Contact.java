@@ -32,10 +32,10 @@ public class Contact {
     private String id;
 
     @Embedded
-    private Address address;
-
-    @Embedded
     private Name name;
+    
+    @Embedded
+    private Address address;
 
     @ElementCollection
     private List<Phone> phone;
@@ -119,6 +119,15 @@ public class Contact {
         this.phone = phone;
     }
 
+    @JsonProperty("name")
+    private void mapName(Map<String, String> name) {
+        String first = name.get("first");
+        String middle = name.get("middle");
+        String last = name.get("last");
+
+        this.name = new Name(first, middle, last);
+    }
+    
     @JsonProperty("address")
     private void mapAddress(Map<String, String> address) {
         String city = address.get("city");
@@ -127,15 +136,6 @@ public class Contact {
         String zip = address.get("zip");
 
         this.address = new Address(city, street, state, zip);
-    }
-
-    @JsonProperty("name")
-    private void mapName(Map<String, String> name) {
-        String first = name.get("first");
-        String middle = name.get("middle");
-        String last = name.get("last");
-
-        this.name = new Name(first, middle, last);
     }
 
     @JsonProperty("phone")
